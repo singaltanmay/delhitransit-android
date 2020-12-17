@@ -24,6 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.delhitransit.delhitransit_android.DelhiTransitApplication;
@@ -60,30 +70,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import jp.wasabeef.blurry.Blurry;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-
 public class MapsFragment extends Fragment {
 
     private static final String TAG = MapsFragment.class.getSimpleName();
-    private static final int WINDOW_DECORATION_FLAG = FLAG_TRANSLUCENT_STATUS;
     private final int LOCATION_PERMISSION_REQUEST_CODE = 101;
     private final int LOCATION_ON_REQUEST_CODE = 101;
     private final List<RouteDetailForAdapter> routesList = new ArrayList<>();
+    private final List<StopDetail> favouriteStopsLists = new ArrayList<>();
     private GoogleMap mMap;
     private Polyline currentPolyline;
     private ApiInterface apiService;
@@ -102,8 +101,6 @@ public class MapsFragment extends Fragment {
     private ImageView blurView;
     private Context context;
     private MaterialProgressBar horizontalProgressBar;
-    private CircleMarker circleMarker;
-    private List<StopDetail> favouriteStopsLists = new ArrayList<>();
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
@@ -132,6 +129,7 @@ public class MapsFragment extends Fragment {
         }
 
     };
+    private CircleMarker circleMarker;
 
     @Nullable
     @Override
@@ -563,22 +561,6 @@ public class MapsFragment extends Fragment {
     private void showToast(String s, String about) {
         Toast.makeText(context, s, Toast.LENGTH_LONG).show();
         Log.e(TAG, about + "  : " + s);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null && getActivity().getWindow() != null) {
-            getActivity().getWindow().addFlags(WINDOW_DECORATION_FLAG);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (getActivity() != null && getActivity().getWindow() != null) {
-            getActivity().getWindow().clearFlags(WINDOW_DECORATION_FLAG);
-        }
     }
 
 }
