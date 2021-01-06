@@ -63,6 +63,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class MapsFragment extends Fragment {
     private MapsViewModel mViewModel;
     private DelhiTransitApplication application;
     private LifecycleOwner mLifecycleOwner;
+    private FloatingActionButton mFlipSearchItemsFab;
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
@@ -168,6 +170,7 @@ public class MapsFragment extends Fragment {
         progressCardView = parentView.findViewById(R.id.progress_bar);
         blurView = parentView.findViewById(R.id.blur_view);
         horizontalProgressBar = parentView.findViewById(R.id.horizontal_loading_bar);
+        mFlipSearchItemsFab = parentView.findViewById(R.id.flip_search_items_fab);
 
         viewVisibility(searchView1, false);
         viewVisibility(searchView2, false);
@@ -323,7 +326,7 @@ public class MapsFragment extends Fragment {
                     reachable.observe(mLifecycleOwner, stops ->{
                         if (stops != null && stops.size() != 0) {
                             stops = stops.stream().filter(it -> it.getName().toUpperCase().contains(currentQuery.toUpperCase())).collect(Collectors.toList());
-                            if (stops != null && stops.size() != 0)
+                            if (stops.size() != 0)
                                 setStopDataOnSearchView(stops.get(0), searchView, isSecondSearchView);
                         } else {
                             showToast("Sorry ,No bus stop with \"" + currentQuery + "\" found");
